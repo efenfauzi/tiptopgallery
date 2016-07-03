@@ -37,7 +37,7 @@ $(document).ready(function(){
                     <img class="img-responsive" src="{{ x.get_first_image }}" alt="" >
                 </a>
                 <div class="panel panel-primary">
-                    <div class="panel-heading">Tags : </div>
+                    <div class="panel-heading">{{ x.title|upper }}</div>
                 </div>
             </div>
             {% endfor %}

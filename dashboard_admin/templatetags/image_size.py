@@ -19,14 +19,18 @@ def image_size(a):
 @register.filter(name='modification_date')
 def modification_date(filename):
 	path = settings.TEMP_DIR_IMAGE 
-
-	t = os.path.getmtime(path+'/'+filename)
-	return datetime.datetime.fromtimestamp(t)
+	try:
+		t = os.path.getmtime(path+'/'+filename)
+		return datetime.datetime.fromtimestamp(t)
+	except:
+		return "no file"
 
 @register.filter(name='get_size')
 def get_size(filename):
 	path = settings.TEMP_DIR_IMAGE 
 
-	t = os.path.getsize(path+'/'+filename)
-
-	return humanize.naturalsize(t)
+	try:
+		t = os.path.getsize(path+'/'+filename)
+		return humanize.naturalsize(t)
+	except:
+		return "no file"

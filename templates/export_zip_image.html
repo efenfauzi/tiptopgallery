@@ -100,8 +100,14 @@
             </tr>
         </tbody>
     </table>
-        <input type="submit" value="Export">
-
+        <input type="submit" value="Export" class="btn btn-success">
 </form>
 
+<br>
+<br>
+ <div class="btn-group btn-group-lg ">
+  <a href="{% url 'image_scrapper' %}" class="btn btn-danger">Scrap</a>
+  <a href="{% url 'export_to_post' %}" class="btn btn-primary">Post Image</a>
+  <a href="{% url 'zip_file' %}" class="btn btn-success">Backup ZIP</a>
+</div>
 {% endblock content %}

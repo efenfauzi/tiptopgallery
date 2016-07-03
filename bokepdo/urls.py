@@ -34,6 +34,7 @@ urlpatterns = [
     url(r'^export/$', dab.export_image, name='export_image'),
     url(r'^zip/$', dab.zip_file, name='zip_file'),
     url(r'^generate_uuid/$', dab.generate_uuid, name='generate_uuid'),
+    url(r'^post/$', dab.export_to_post, name='export_to_post'),
 
     # url(r'^delete_one/$', dab.delete_one, name='delete_one'),
 

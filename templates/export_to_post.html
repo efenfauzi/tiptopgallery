@@ -1,29 +1,31 @@
 {% extends "base.html" %}
-{% block title %}Output {% endblock %}
+{% block title %}Index of {{ path }} {% endblock %}
 
 {% block extrastyle %}
 <style type="text/css">
     body,html {
     background:#fff;font-family:"Bitstream Vera Sans","Lucida Grande","Lucida Sans Unicode",Lucidux,Verdana,Lucida,sans-serif;
-        }
+    }
     tr:nth-child(even) {
     background:#f4f4f4;
-        }
+    }
     th,td {
     padding:0.1em 0.5em;
-        }
+    }
     th {
     text-align:left;font-weight:bold;background:#eee;border-bottom:1px solid #aaa;
-        }
+    }
     #list {
     border:1px solid #aaa;width:100%;
-        }
+    }
     a {
     color:#3454C2;
-        }
+    }
     a:hover {
         color:#e33;
-        }
+    }
+
+
 </style>
 {% endblock %}
 
@@ -52,16 +54,18 @@
 
 {% block content %}
 
-<h2 class="page-header">Output Scraping</h2>
+<h2 class="page-header">Index of {{ path }}</h2>
     <table id="list" cellpadding="0.1em" cellspacing="0">
         <colgroup>
-            <col width="55%"/>
-            <col width="20%"/>
-            <col width="25%"/>
+            <col width="45%"/>
+            <col width="15%"/>
+            <col width="15%"/>
+            <col width="5%"/>
         </colgroup>
         <thead>
             <tr>
-            <th>Thumb</th>
+            <th>File Name</th>
+            <th>Created</th>
             <th>Image Size</th>
             <th>Checklist</th>
             </tr>
@@ -71,26 +75,44 @@
             <tr>
             {% load image_size %}
             {% for x in datafile %}
-            <td><img src="{{ url_media }}{{ x }}" height="100px" width="100px">
-                </br>{{ x }}
+            <td>
+
+            <a href="{{ url_media }}{{ x }}">{{ x }}</a>
             </td>
-            <td>{{ x|image_size }}</td>
+            <td>
+            {{ x|modification_date }}
+            </td>
+            <td>{{ x|get_size }} {{ x|image_size }}</td>
             <td>
             <form method="POST">
             {% csrf_token %}
             <input class="checkbox-inline" type="checkbox" name="data" value="{{ x }}">
             </td>
-               </tr>
+            </tr>
             {% endfor %}
             <tr>
             <td>Total : {{ datafile|length }} files </td>
             <td>-</td>
+            <td>-</td>
+
             <td><input type="button" id="toggle" value="select all" onClick="do_this()" />
-            <input type="submit" value="delete all">
             </td>
             </tr>
         </tbody>
     </table>
+    	<div class="col-xs-4">
+		  <label for="title">Title Post:</label>
+		  <input type="text" class="form-control" id="title" name="title">
+        <input type="submit" value="Post to Gallery" class="btn btn-primary">
+		</div>
+</form>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 <br>
 <br>
  <div class="btn-group btn-group-lg ">

@@ -13,6 +13,7 @@ import os
 import datetime
 import string
 import uuid
+from shutil import copyfile, move
 # Create your views here.
 def index(request):
 	data = Post.objects.all()
@@ -234,3 +235,36 @@ def rename_data(request, post_id):
 				pass
 
 	return HttpResponseRedirect("/")
+
+
+def export_to_post(request):
+	path = settings.TEMP_DIR_IMAGE 
+	datafile = os.listdir(path)
+	url_media = settings.URL_MEDIA
+	zip_media = settings.ZIP_MEDIA
+	image_dir = settings.IMAGE_DIR
+
+	if request.method == 'POST':
+		data = request.POST.getlist('data')
+		for x in data:
+			print x
+			src = ("{0}/{1}".format(path, x))
+			dest = ("{0}/{1}".format(image_dir, x))
+			print src
+			print dest
+			# copyfile(src, dest)
+			move(src, dest)
+		title = request.POST.get('title')
+
+		post = Post(title=title.title())
+		post.save()
+		for x in data:
+			PostImage.objects.get_or_create(post=post, images="image/{0}".format(x))
+			# try:
+			# 	os.remove(path+'/'+x)
+			# except:
+			# 	print "delete on temp dir"
+		return HttpResponseRedirect('/post')
+
+			
+	return render(request, 'export_to_post.html', {'datafile': datafile, 'url_media': url_media, 'path':path}) #{'form':form, }

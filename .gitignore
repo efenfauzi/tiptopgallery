@@ -165,5 +165,7 @@ media/
 /venv
 venv/
 
+*.sqlite3
+
 *.py.save
 *.pyc
