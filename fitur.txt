@@ -1,0 +1,9 @@
+tambahan 
+
+
+- disclaimer
+- fitur lightbox saat detail
+- url detail di hash bisa dipakai sementara OK
+- fungsi zip semua gambar + source text
+- filename sesuai urutan upload filename_001.jpg OK
+- paginasi OK

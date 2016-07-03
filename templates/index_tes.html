@@ -1,0 +1,14 @@
+{% load staticfiles %}
+<h1>TipTop Gallery</h1> 
+
+{% for x in data %}
+<div>
+    <h2>{{ x.title }}</h2></br>
+	<a href="{% url 'detail' x.id %}">
+	<img src="{{ x.get_first_image }}">
+	</a>
+	</br>
+	</br>
+	<hr>
+</div>
+{% endfor %}

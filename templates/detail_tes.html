@@ -1,0 +1,12 @@
+{% load staticfiles %}
+<title>{{ data.title }}</title>
+<h1>Bokepdo ~ {{ data.title }}</h1> 
+
+<div>
+	{% for y in data.get_image %}
+	<a href="{{ y.images.url }}"><img src="{{ y.images.url }}" height="25%"></a>
+	{% endfor %}
+	</br>
+	</br>
+	<hr>
+</div>

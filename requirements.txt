@@ -1,0 +1,10 @@
+Django==1.9.7
+future==0.15.2
+humanize==0.5.1
+ImageScraper==2.0.7
+lxml==3.6.0
+Pillow==3.3.0
+requests==2.10.0
+setproctitle==1.1.10
+SimplePool==0.1
+wheel==0.24.0
