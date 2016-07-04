@@ -13,7 +13,8 @@ import os
 import datetime
 import string
 import uuid
-from shutil import copyfile, move
+from shutil import copyfile, move, make_archive
+from django.core.urlresolvers import reverse
 # Create your views here.
 def index(request):
 	data = Post.objects.all()
@@ -30,7 +31,7 @@ def randomword(length):
 
 
 def index_new(request):
-	all = Post.objects.all()
+	all = Post.objects.all().order_by('-created')
 	# generate_uuid = all.values('url_id')
 
 	# date = datetime.datetime.now().strftime('%H:%M:%S')
@@ -41,8 +42,6 @@ def index_new(request):
 	# 		data.save()
 	# except:
 	# 	pass
-
-
 	paginator = Paginator(all, 16) # Show 25 contacts per page
 	
 	page = request.GET.get('page')
@@ -184,17 +183,33 @@ def zip_file(request):
 
 def delete_one(request, x):
 	path = settings.TEMP_DIR_IMAGE 
-	datafile = os.listdir(path)
 	url_media = settings.URL_MEDIA
-
-
-	# print "data data"
-	# if request.method == 'POST':
-		# data = request.POST.get('data')
-		# print data
+	print path
+	print x
 	os.remove(path+'/'+x)
+	alert = '''
+		<!DOCTYPE html>
+		<html>
+		<body onload=myFunction()>
+		<script>
+		function myFunction() {
+		    var x;
+		    if (confirm("Press a button!") == true) {
+		        x = "You pressed OK!";
+		    } else {
+		        x = "You pressed Cancel!";
+		    }
+		    document.getElementById("demo").innerHTML = x;
+		}
+		</script>
+
+		</body>
+		</html>
+	'''
+
+	print alert
 	return HttpResponseRedirect('/output')
-	# return render(request, 'list_image.html', {'datafile': datafile, 'url_media': url_media}) #{'form':form, }
+	# return HttpResponseRedirect(reverse('delete_one'))
 
 def generate_uuid(request):
 	all = Post.objects.all()
@@ -217,23 +232,47 @@ def rename_data(request, post_id):
 	print img_dir
 	count = 0
 
+	print image
 	for x in image:
-		data = str(x.images)
-		path = data.split('/')[0]
-		file = data.split('/')[1]
-		filename = file.split('.')[0]
-		ext = data.split('.')[1]
-		if count <= int(image.count()):
+		# print x.images
+		ext = str(x.images).split('.')[-1]
+		if count <= image.count():
 			try:
-				x.images = "{0}/{1}_{2}_img_{3}.{4}".format(path, unique, title, count, ext)
+				src = ("{0}/{1}".format(settings.MEDIA_ROOT, x.images))
+				dest = ("{0}/{1}_{2}_img_{3}.{4}".format(settings.MEDIA_ROOT, unique, title, count, ext))
+				print "data belum diubah %s" %src 
+				print "data setelah diubah %s" %dest
+				os.rename(src, dest)
+				x.images = ("{0}_{1}_img_{2}.{3}".format(unique, title, count, ext))
 				x.save()
-				src = ("{0}/{1}.{2}".format(img_dir,filename, ext))
-				dest = ("{0}/{1}_{2}_img_{3}.{4}".format(img_dir, unique, title, count, ext))
-				os.rename(src, dest) 
 				count = count + 1
-			except:
-				pass
 
+			except:
+				print "error file doesnt exist"
+	# 	data = str(x.images)
+	# 	path = data.split('/')[0]
+	# 	file = data.split('/')[1]
+	# 	filename = file.split('.')[0]
+	# 	ext = data.split('.')[1]
+	# 	print path
+	# 	print file
+	# 	print filename
+	# 	print ext
+	# 	print image.count()
+		# if count <= int(image.count()):
+		# try:
+		# 	src = ("{0}/{1}.{2}".format(img_dir,filename, ext))
+		# 	dest = ("{0}/{1}_{2}_img_{3}.{4}".format(img_dir, unique, title, count, ext))
+			
+		# 	print src 
+		# 	print dest # os.rename(src, dest) 
+			# count = count + 1
+			# x.images = "{0}/{1}_{2}_img_{3}.{4}".format(path, unique, title, count, ext)
+			# x.save()
+
+		# except:
+		# 	pass
+		# return HttpResponseRedirect('/')
 	return HttpResponseRedirect("/")
 
 
@@ -268,3 +307,26 @@ def export_to_post(request):
 
 			
 	return render(request, 'export_to_post.html', {'datafile': datafile, 'url_media': url_media, 'path':path}) #{'form':form, }
+
+
+def zip_post(request, post_id):
+	data = get_object_or_404(Post, url_id=post_id)
+	zip_media = settings.ZIP_MEDIA
+	image_dir = settings.IMAGE_DIR
+	x = str(data.title.title()).replace(" ", "")
+	print x
+
+	subprocess.call("rm -r {0}/*.zip".format(zip_media), shell=True)
+
+	img =  data.images.all()
+
+	for a in img:
+		print a.images
+		subprocess.call("zip -rj5 {0}/{1}.zip {2}/{3}".format(zip_media, x, settings.MEDIA_ROOT, a.images), shell=True)
+
+	zip_file = open("{0}/{1}.zip".format(zip_media, x))
+	response = HttpResponse(zip_file, content_type='application/force-download')
+	response['Content-Disposition'] = 'attachment; filename="img_%s.zip"' % (x)
+	return response
+
+	# return render(request, 'detail.html', {'data': data})

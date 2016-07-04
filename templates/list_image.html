@@ -79,6 +79,7 @@
             <form method="POST">
             {% csrf_token %}
             <input class="checkbox-inline" type="checkbox" name="data" value="{{ x }}">
+            <a href="{% url 'delete_one' x %}" class="btn btn-danger">delete</a>
             </td>
                </tr>
             {% endfor %}
