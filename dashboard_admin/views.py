@@ -229,6 +229,7 @@ def rename_data(request, post_id):
 	title =  str(data.title).replace(" ", "")
 	unique = randomword(4)
 	img_dir = settings.IMAGE_DIR
+	thumb_dir = settings.MEDIA_ROOT+'image/thumb'
 	print img_dir
 	count = 0
 
@@ -239,12 +240,27 @@ def rename_data(request, post_id):
 		if count <= image.count():
 			try:
 				src = ("{0}/{1}".format(settings.MEDIA_ROOT, x.images))
-				dest = ("{0}/{1}_{2}_img_{3}.{4}".format(settings.MEDIA_ROOT, unique, title, count, ext))
+				dest = ("{0}/{1}_{2}_img_{3}.{4}".format(img_dir, unique, title, count, ext))
 				print "data belum diubah %s" %src 
 				print "data setelah diubah %s" %dest
 				os.rename(src, dest)
-				x.images = ("{0}_{1}_img_{2}.{3}".format(unique, title, count, ext))
-				x.save()
+
+				src_thumb = ("{0}/{1}".format(settings.MEDIA_ROOT, x.thumbs))
+				dest_thumb = ("{0}/{1}_{2}_img_{3}-150x150thumb.{4}".format(thumb_dir, unique, title, count, ext))
+				print "data belum diubah %s" %src_thumb 
+				print "data setelah diubah %s" %dest_thumb
+				os.rename(src_thumb, dest_thumb)
+
+				image_name = ("image/{0}_{1}_img_{2}.{3}".format(unique, title, count, ext))
+				thumb_name = ("image/thumb/{1}_{2}_img_{3}-150x150thumb.{4}".format(unique, title, count, ext))
+
+				print "image %s" %image_name
+				print "thumb %s" %thumb_name
+
+				data = PostImage(post=data, images=image_name, thumbs=thumb_name)
+				data.save()
+				# x.images = ("image/{0}_{1}_img_{2}.{3}".format(unique, title, count, ext))
+				# x.save()
 				count = count + 1
 
 			except:
@@ -282,6 +298,8 @@ def export_to_post(request):
 	url_media = settings.URL_MEDIA
 	zip_media = settings.ZIP_MEDIA
 	image_dir = settings.IMAGE_DIR
+	count = 0
+	unique = randomword(4)
 
 	if request.method == 'POST':
 		data = request.POST.getlist('data')
@@ -298,11 +316,19 @@ def export_to_post(request):
 		post = Post(title=title.title())
 		post.save()
 		for x in data:
-			PostImage.objects.get_or_create(post=post, images="image/{0}".format(x))
+			ext = str(x).split('.')[-1]
+			src = ("{0}/{1}".format(image_dir, x))
+			dest = ("{0}/{1}_{2}_img_{3}.{4}".format(image_dir, unique, title, count, ext))
+			print "data belum diubah %s" %src 
+			print "data setelah diubah %s" %dest
+			os.rename(src, dest)
+
+			PostImage.objects.get_or_create(post=post, images="image/{0}_{1}_img_{2}.{3}".format(unique, title, count, ext))
 			# try:
 			# 	os.remove(path+'/'+x)
 			# except:
 			# 	print "delete on temp dir"
+			count = count + 1
 		return HttpResponseRedirect('/post')
 
 			

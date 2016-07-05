@@ -14,7 +14,7 @@ class PostImageInline(admin.TabularInline):
 class PostAdmin(admin.ModelAdmin):
 	# pass
 	inlines = [PostImageInline, ]
-	list_display = 'title', 'get_first_image', 'url_id'
+	list_display = 'title', 'get_thumb_image', 'url_id'
 
 
 	# actions = ['change_uuid', ]

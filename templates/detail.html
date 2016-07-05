@@ -12,7 +12,7 @@
             {% for y in data.get_image %}
             <div class="col-lg-3 col-md-4 col-xs-6 thumb">
                 <a class="thumbnail" href="{{ y.images.url }}">
-                    <img class="img-responsive" src="{{ y.images.url }}" alt="">
+                    <img class="img-responsive" src="{{ y.thumbs.url }}" alt="">
                 </a>
             </div>
             {% endfor %}
