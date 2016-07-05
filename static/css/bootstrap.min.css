@@ -1123,10 +1123,11 @@ img {
 .carousel-inner > .item > a > img {
   display: block;
   max-width: 100%;
-  height: auto;
+  height: 225px;
+  width: auto;
 }
 .img-rounded {
-  border-radius: 10px;
+  border-radius: 6px;
 }
 .img-thumbnail {
   display: inline-block;
@@ -5452,6 +5453,8 @@ button.list-group-item-danger.active:focus {
 }
 .panel {
   margin-bottom: 20px;
+  margin-top: -15px;
+
   background-color: #fff;
   border: 1px solid transparent;
   border-radius: 4px;

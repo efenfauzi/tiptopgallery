@@ -17,6 +17,7 @@ class PostAdmin(admin.ModelAdmin):
 	list_display = 'title', 'get_thumb_image', 'url_id'
 
 
+	
 	# actions = ['change_uuid', ]
 
 
@@ -30,6 +31,14 @@ class PostImageAdmin(admin.ModelAdmin):
 	pass
 
 	
+class CategoryAdmin(admin.ModelAdmin):
+	list_display = 'name', 'status', 
+
+class CategoryPostAdmin(admin.ModelAdmin):
+	list_display = 'post', 'category', 
+
 
 admin.site.register(Post, PostAdmin)
 # admin.site.register(PostImage, PostImageAdmin)
+admin.site.register(Category, CategoryAdmin)
+admin.site.register(CategoryPost, CategoryPostAdmin)

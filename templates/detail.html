@@ -1,7 +1,22 @@
 {% extends "base.html" %}
 
 {% block title %}Gallery of {{ data.title }}{% endblock %}
-
+{% block extrastyle %}
+<style type="text/css">
+    .panel-default{
+        margin-right: auto;
+        margin-left: auto;
+        width: 95%;
+        padding: 3px;
+        align: center;
+    }
+    .tags {
+      border-radius: 5px 5px 5px;
+      background: #BADA55;
+      padding: 5px;
+    }
+</style>
+{% endblock %}
 {% block content %}
         <div class="row">
 
@@ -17,6 +32,16 @@
             </div>
             {% endfor %}
 
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-footer">
+          Tags : 
+          {% for cat in category %}
+            <span class="tags"><a href="/gallery/image?={{ cat.post.url_id }}.html">{{ cat.category.name }}</a>
+            </span>&nbsp;
+            {% endfor %}
+          </div>
         </div>
 
 

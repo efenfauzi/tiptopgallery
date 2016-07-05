@@ -92,7 +92,7 @@ class PostImage(models.Model):
 			image = Image.open(StringIO.StringIO(self.images.read()))
 			if image.mode != "RGB":
 				image = image.convert("RGB")
-		image.thumbnail((225,225), Image.ANTIALIAS)
+		image.thumbnail((180,180), Image.ANTIALIAS)
 		output = StringIO.StringIO()
 		image.save(output, format='jpeg', quality=99)
 		output.seek(0)
@@ -116,3 +116,50 @@ class ScrapImage(models.Model):
 		db_table = ' scrap_image'
 		verbose_name = u'Scrap Image'
 		verbose_name_plural = u'Scrap Image'
+
+def upload_icon(instance, filename):
+	ext = filename.split('.')[-1]
+	name = "{0}.{1}".format(str(instance.name).lower(), ext)
+	return ('image/icon/'+name)
+
+class Category(models.Model):
+	parent = models.ForeignKey('self', null=True,blank=True, related_name='subcategories')
+	name = models.CharField(max_length=100)
+	list_status = ((0, "not active"), (1, "active"))
+	status = models.IntegerField(default=1, choices=list_status)
+	icon = models.ImageField(upload_to=upload_icon, max_length=255, null=True, blank=True)
+	
+	def __str__(self):
+		return self.name
+
+	class Meta:
+		db_table = 'categories'
+		verbose_name = 'Category'
+		verbose_name_plural = 'Category'
+
+	def save(self, *args, **kwargs):
+
+		if self.icon:
+			ext = str(self.icon).split('.')[-1]
+			image = Image.open(StringIO.StringIO(self.icon.read()))
+			if image.mode != "RGB":
+				image = image.convert("RGB")
+			image.thumbnail((64,64), Image.ANTIALIAS)
+			output = StringIO.StringIO()
+			image.save(output, format='jpeg', quality=99)
+			output.seek(0)
+			self.icon= InMemoryUploadedFile(output,'ImageField', "{0}.{1}".format(self.icon.name, ext), 'image/jpeg', output.len, None)
+
+		super(Category, self).save(*args, **kwargs)
+
+class CategoryPost(models.Model):
+	post = models.ForeignKey(Post, related_name='categorypost')
+	category = models.ForeignKey(Category, null=True, blank=True)
+
+	def __str__(self):
+		return self.post.title
+
+	class Meta:
+		db_table = 'category_posts'
+		verbose_name = 'Category Post'
+		verbose_name_plural = 'Category Post'

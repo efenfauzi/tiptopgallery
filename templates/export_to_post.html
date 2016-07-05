@@ -100,21 +100,32 @@
             </tr>
         </tbody>
     </table>
-    	<div class="col-xs-4">
-		  <label for="title">Title Post:</label>
-		  <input type="text" class="form-control" id="title" name="title">
-        <input type="submit" value="Post to Gallery" class="btn btn-primary">
-		</div>
-</form>
+    </br>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+  <div class="panel-group">
+    <div class="panel panel-default">
+        <div class="panel-heading">Category</div>
+         <div class="panel-body">
+          {% for cat in category %}
+            <input class="checkbox-inline" type="checkbox" name="category" value="{{ cat.id }}">{{ cat.name }}
+        {% endfor %}
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Title Post</div>
+         <div class="panel-body">
+         <div class="col-xs-8">
+            <input type="text" class="form-control" id="title" name="title" placeholder="Create a title to post">
+         </div>
+         <div class="col-xs-4">
+            <input type="submit" value="Post to Gallery" class="btn btn-primary">
+         </div>
+        </div>
+    </div>
+</form>
+</div>
+
  <div class="btn-group btn-group-lg ">
   <a href="{% url 'image_scrapper' %}" class="btn btn-danger">Scrap</a>
   <a href="{% url 'export_to_post' %}" class="btn btn-primary">Post Image</a>

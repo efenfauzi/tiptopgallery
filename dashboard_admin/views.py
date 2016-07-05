@@ -23,7 +23,8 @@ def index(request):
 
 def detail(request, post_id):
 	data = get_object_or_404(Post, pk=post_id)
-	return render(request, 'detail.html', {'data': data})
+	category = CategoryPost.objects.filter(post=data)
+	return render(request, 'detail.html', {'data': data, 'category':category})
 
 def randomword(length):
 	kombinasi = "%s%s0123456789" % (string.lowercase, string.uppercase)
@@ -57,10 +58,17 @@ def index_new(request):
 
 	return render(request, 'index.html', {'data':data})
 	
+# def detail_new(request, post_id):
+#     data = get_object_or_404(Post, url_id=post_id)
+#     return render(request, 'detail.html', {'data': data})
+
 def detail_new(request, post_id):
-    data = get_object_or_404(Post, url_id=post_id)
-    return render(request, 'detail.html', {'data': data})
-	
+	data = get_object_or_404(Post, url_id=post_id)
+	category = CategoryPost.objects.filter(post=data).filter(category__status=1)
+
+	print category
+
+	return render(request, 'detail.html', {'data': data, 'category':category})
 
 def post(request):
 
@@ -301,6 +309,8 @@ def export_to_post(request):
 	count = 0
 	unique = randomword(4)
 
+	category = Category.objects.filter(status=1)
+
 	if request.method == 'POST':
 		data = request.POST.getlist('data')
 		for x in data:
@@ -318,21 +328,27 @@ def export_to_post(request):
 		for x in data:
 			ext = str(x).split('.')[-1]
 			src = ("{0}/{1}".format(image_dir, x))
-			dest = ("{0}/{1}_{2}_img_{3}.{4}".format(image_dir, unique, title, count, ext))
+			dest = ("{0}/{1}_{2}_img_{3}.{4}".format(image_dir, unique, title.replace(" ", "_"), count, ext))
 			print "data belum diubah %s" %src 
 			print "data setelah diubah %s" %dest
 			os.rename(src, dest)
 
-			PostImage.objects.get_or_create(post=post, images="image/{0}_{1}_img_{2}.{3}".format(unique, title, count, ext))
+			PostImage.objects.get_or_create(post=post, images="image/{0}_{1}_img_{2}.{3}".format(unique, title.replace(" ", "_"), count, ext))
 			# try:
 			# 	os.remove(path+'/'+x)
 			# except:
 			# 	print "delete on temp dir"
 			count = count + 1
+		cat = request.POST.getlist('category')
+		print cat
+		for a in cat:
+			CategoryPost.objects.get_or_create(post=post, category_id=int(a))
+
+
 		return HttpResponseRedirect('/post')
 
 			
-	return render(request, 'export_to_post.html', {'datafile': datafile, 'url_media': url_media, 'path':path}) #{'form':form, }
+	return render(request, 'export_to_post.html', {'datafile': datafile, 'url_media': url_media, 'path':path, 'category': category}) #{'form':form, }
 
 
 def zip_post(request, post_id):
