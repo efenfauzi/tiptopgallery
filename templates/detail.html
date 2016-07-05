@@ -2,7 +2,10 @@
 
 {% block title %}Gallery of {{ data.title }}{% endblock %}
 {% block extrastyle %}
-<style type="text/css">
+    <link type="text/css" rel="stylesheet" href="/static/css/featherlight.min.css" />
+    <link type="text/css" rel="stylesheet" href="/static/css/featherlight.gallery.min.css" />
+    <style type="text/css">
+           
     .panel-default{
         margin-right: auto;
         margin-left: auto;
@@ -15,8 +18,31 @@
       background: #BADA55;
       padding: 5px;
     }
+
 </style>
 {% endblock %}
+
+{% block script %}
+        <script src="/static/js/jquery-1.7.0.min.js"></script>
+        <script src="/static/css/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/static/css/featherlight.gallery.min.js" type="text/javascript" charset="utf-8"></script>
+
+        <script>
+            $(document).ready(function(){
+                $('.gallery').featherlightGallery({
+                    gallery: {
+                        fadeIn: 300,
+                        fadeOut: 300,
+
+                    },
+                    openSpeed:    300,
+                    closeSpeed:   300
+                });
+            });
+
+        </script>
+{% endblock %}
+
 {% block content %}
         <div class="row">
 
@@ -24,14 +50,12 @@
                 <h1 class="page-header">TipTop Gallery ~ {{ data.title }}</h1>
             </div>
             
-            {% for y in data.get_image %}
-            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                <a class="thumbnail" href="{{ y.images.url }}">
-                    <img class="img-responsive" src="{{ y.thumbs.url }}" alt="">
-                </a>
-            </div>
-            {% endfor %}
-
+                 {% for y in data.get_image %}
+                <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                    <a class="thumbnail gallery" href="{{ y.images.url }}">
+                    <img class="img-responsive" src="{{ y.thumbs.url }}" /></a>
+                </div>
+                {% endfor %}
         </div>
 
         <div class="panel panel-default">
@@ -46,3 +70,4 @@
 
 
 {% endblock content %}
+
