@@ -66,9 +66,24 @@ def detail_new(request, post_id):
 	data = get_object_or_404(Post, url_id=post_id)
 	category = CategoryPost.objects.filter(post=data).filter(category__status=1)
 
-	print category
+	if request.method == 'GET':
+		counter = VisitPagePost.objects.filter(post=data).last()
+		if counter is None:
+			# print "save baru"
+			VisitPagePost(post=data, count=1).save()
+		else:
+			# print int(counter.count)+1
+			VisitPagePost.objects.filter(post=data).update(count=int(counter.count)+1)
+	
+	# print category
 
-	return render(request, 'detail.html', {'data': data, 'category':category})
+	populer = VisitPagePost.objects.all().order_by('-count')[:5]
+
+	recent = Post.objects.order_by('-created')[:5]
+
+	# print recent
+
+	return render(request, 'detail.html', {'data': data, 'category':category, 'populer':populer, 'recent':recent})
 
 def post(request):
 
@@ -251,13 +266,13 @@ def rename_data(request, post_id):
 				dest = ("{0}/{1}_{2}_img_{3}.{4}".format(img_dir, unique, title, count, ext))
 				print "data belum diubah %s" %src 
 				print "data setelah diubah %s" %dest
-				os.rename(src, dest)
+				os.move(src, dest)
 
 				src_thumb = ("{0}/{1}".format(settings.MEDIA_ROOT, x.thumbs))
 				dest_thumb = ("{0}/{1}_{2}_img_{3}-150x150thumb.{4}".format(thumb_dir, unique, title, count, ext))
 				print "data belum diubah %s" %src_thumb 
 				print "data setelah diubah %s" %dest_thumb
-				os.rename(src_thumb, dest_thumb)
+				os.move(src_thumb, dest_thumb)
 
 				image_name = ("image/{0}_{1}_img_{2}.{3}".format(unique, title, count, ext))
 				thumb_name = ("image/thumb/{1}_{2}_img_{3}-150x150thumb.{4}".format(unique, title, count, ext))
@@ -372,3 +387,33 @@ def zip_post(request, post_id):
 	return response
 
 	# return render(request, 'detail.html', {'data': data})
+
+def category_post(request, name):
+	# category = CategoryPost.objects.filter(category__status=1)
+
+	all_category = Category.objects.filter(status=1)
+	category = CategoryPost.objects.filter(category__status=1)
+	data =  category.filter(category__name=name)
+	cat = data.values_list('category__name', flat=True)[0]
+	# print x
+	paginator = Paginator(data, 10) # Show 25 contacts per page
+	
+	page = request.GET.get('page')
+    
+	try:
+		postdata = paginator.page(page)
+	except PageNotAnInteger:
+		# If page is not an integer, deliver first page.
+		postdata = paginator.page(1)
+	except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+		postdata = paginator.page(paginator.num_pages)
+
+	return render(request, 'category.html', {'postdata': postdata, 'category':category, 'cat':cat, 'all_category': all_category})
+
+def populer_post(request):
+	# post = Post.objects.all()
+	visitpost = VisitPagePost.objects.all().order_by('-count')[:5]
+
+	# print visitpost
+	return HttpResponse('view data')

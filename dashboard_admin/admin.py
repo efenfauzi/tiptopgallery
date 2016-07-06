@@ -14,7 +14,7 @@ class PostImageInline(admin.TabularInline):
 class PostAdmin(admin.ModelAdmin):
 	# pass
 	inlines = [PostImageInline, ]
-	list_display = 'title', 'get_thumb_image', 'url_id'
+	list_display = 'title', 'get_thumb_image', 'url_id', #'get_height_size'
 
 
 	
@@ -38,7 +38,12 @@ class CategoryPostAdmin(admin.ModelAdmin):
 	list_display = 'post', 'category', 
 
 
+class VisitPagePostAdmin(admin.ModelAdmin):
+	list_display = 'post', 'count', 
+
+
 admin.site.register(Post, PostAdmin)
 # admin.site.register(PostImage, PostImageAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(CategoryPost, CategoryPostAdmin)
+admin.site.register(VisitPagePost, VisitPagePostAdmin)

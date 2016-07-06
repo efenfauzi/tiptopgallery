@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}List of Category {{ cat }}{% endblock %}
+{% block extrastyle %}
+<style type="text/css">
+    .icon_category{
+        border: 5px;
+        text-align: center;
+        background-color: lavender;
+        border-radius: 5px 5px 5px 5px;
+        padding: 5px;
+        position: inherit;
+        float: right !important;
+        width: 30% !important;
+
+    }
+    .related_post{
+        width: 60% !important;
+        text-align: center;
+        padding-top: 10px;
+        padding-left: 10px;
+        padding-right: 5px;
+        padding-bottom: 10px;
+    }
+
+    .thumbs {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px;
+        margin: 5px;
+        background-color: #fff;
+        width: auto;
+        height: auto;
+
+    }
+    .thumbs:hover{
+        border: 1px solid green;
+        border-radius: 8px;
+        background-color: lightgreen;
+
+    }
+
+
+    a:hover,
+    a:focus {
+      color: none !important;
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+
+    <div class="col-lg-12">
+        <h1 class="page-header">TipTop Category Tags ~ {{ cat }}</h1>
+    </div>
+    
+    <div class="panel panel-default">
+      <div class="panel-heading">Panel Header</div>
+      <div class="panel-body">
+        <div class="col-xs-8 related_post">
+            {% for y in postdata %}
+            <a data-toggle="tooltip" title="{{ y.post.title }}" href="{% url 'detail_new' y.post.url_id %}">
+            <img class="thumbs" src="/media/{{ y.post.get_thumb_image }}" >
+            </a>
+            {% endfor %} 
+
+                  {% if postdata %}
+    <div class="center"> 
+      <ul class="pagination">
+          {% if postdata.has_previous %}
+              <li><a href="?page={{ postdata.previous_page_number }}">Previous</a></li>
+          {% endif %}
+          {% for pg in postdata.paginator.page_range %}
+              {% if postdata.number == pg %}
+                  <li class="active"><a href="?page={{ pg }}">{{ pg }}</a></li>
+              {% else %}
+                  <li><a href="?page={{ pg }}">{{ pg }}</a></li>
+              {% endif %}
+          {% endfor %}
+          {% if postdata.has_next %}
+              <li><a href="?page={{ postdata.next_page_number }}">Next</a></li>
+          {% endif %}
+      </ul>
+    </div>
+    {% endif %}
+        </div>
+
+
+
+        <div class="col-xs-2 icon_category">
+                <h2 class="page-header">Browse category</h2>
+            {% for cat in all_category %}
+                <a href="/category/search={{ cat.name }}.html">
+                    <img src="{{ cat.icon_image.url }}">
+                </a>
+            {% endfor %}
+        </div>
+      </div>
+    </div>
+    
+
+
+</div>
+
+
+{% endblock content %}
+

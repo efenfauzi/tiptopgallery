@@ -18,7 +18,36 @@
       background: #BADA55;
       padding: 5px;
     }
+    .panel-body{
+        padding: 2px;
+        text-align: center;
+        margin: 2px;
+        max-width: 200;
+        width: auto;
+        float: middle;
 
+    }
+    .thumbs {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px;
+        margin: 5px;
+        background-color: #fff;
+        width: auto;
+        height: auto;
+
+    }
+    .thumbs:hover{
+        border: 1px solid green;
+        border-radius: 8px;
+        background-color: lightgreen;
+
+    }
+
+    a:hover,
+    a:focus {
+      color: none !important;
+    }
 </style>
 {% endblock %}
 
@@ -62,12 +91,33 @@
           <div class="panel-footer">
           Tags : 
           {% for cat in category %}
-            <span class="tags"><a href="/gallery/image?={{ cat.post.url_id }}.html">{{ cat.category.name }}</a>
+            <span class="tags"><a href="/category/search={{ cat.category.name }}.html">{{ cat.category.name }}</a>
             </span>&nbsp;
             {% endfor %}
           </div>
         </div>
+</br>
+<div class="panel panel-danger">
+      <div class="panel-heading">Populer Chicks</div>
+      <div class="panel-body">
+       {% for pop in populer %}
+        <a data-toggle="tooltip" title="{{ pop.post.title }}" href="/gallery/image={{ pop.post.url_id }}.html">
+        <img class="thumbs" src="/media/{{ pop.post.get_thumb_image }}">
+        </a>
+        {% endfor %}
+      </div>
+    </div>
 
+<div class="panel panel-info">
+  <div class="panel-heading">Recent Chicks</div>
+  <div class="panel-body">
+   {% for rec in recent %}
+    <a data-toggle="tooltip" title="{{ rec.title }}" href="/gallery/image={{ rec.url_id }}.html">
+    <img class="thumbs" src="/media/{{ rec.get_thumb_image }}">
+    </a>
+    {% endfor %}
+  </div>
+</div>
 
 {% endblock content %}
 

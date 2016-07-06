@@ -45,7 +45,7 @@ class Post(models.Model):
 
 		thumb = PostImage.objects.filter(post=self.id)
 
-		print thumb.values('thumbs')
+		# print thumb.values('thumbs')
 		try:
 			if img != 0: 
 				random_thumb = random.randrange(int(img))
@@ -53,6 +53,21 @@ class Post(models.Model):
 				return image_random
 		except:
 			return 0
+
+	# def get_height_size(self):
+		#= get width <= width
+		# thumb = PostImage.objects.filter(post=self.id)
+
+		# for x in thumb:
+
+		# 	image = Image.open(StringIO.StringIO(x.thumbs.read()))
+		# 	width, height = image.size
+			# print width
+			# print height
+			# if width < height :
+				# print dir(image)
+				# print image
+		# return
 		# print thumb
 
 		
@@ -137,6 +152,12 @@ class Category(models.Model):
 		verbose_name = 'Category'
 		verbose_name_plural = 'Category'
 
+	def icon_image(self):
+		if self.icon:
+			return self.icon
+		else:
+			return "none"
+
 	def save(self, *args, **kwargs):
 
 		if self.icon:
@@ -157,9 +178,22 @@ class CategoryPost(models.Model):
 	category = models.ForeignKey(Category, null=True, blank=True)
 
 	def __str__(self):
-		return self.post.title
+		return str(self.post.title)
 
 	class Meta:
 		db_table = 'category_posts'
 		verbose_name = 'Category Post'
 		verbose_name_plural = 'Category Post'
+
+
+class VisitPagePost(models.Model):
+	post = models.ForeignKey(Post, related_name='visitedpost')
+	count = models.IntegerField(default=0)
+
+	def __str__(self):
+		return str(self.count)
+
+	class Meta:
+		db_table = 'visit_posts'
+		verbose_name = 'Visit Post'
+		verbose_name_plural = 'Visit Post'
