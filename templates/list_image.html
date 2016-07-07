@@ -71,7 +71,7 @@
             <tr>
             {% load image_size %}
             {% for x in datafile %}
-            <td><img src="{{ url_media }}{{ x }}" height="100px" width="100px">
+            <td><img src="{{ url_media }}/{{ x }}" height="100px" width="100px">
                 </br>{{ x }}
             </td>
             <td>{{ x|image_size }}</td>

@@ -16,6 +16,7 @@
 
     <!-- Custom CSS -->
     <link href="/static/css/thumbnail-gallery.css" rel="stylesheet">
+    <link href="/static/css/search-expandle.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -23,6 +24,12 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style type="text/css">
+    .right{
+        float: right;
+    }
+
+    </style>
 {% block extrastyle %}{% endblock %}
 {% block extrascripts %}{% endblock %}
 
@@ -56,6 +63,16 @@
                         <a href="#">Contact</a>
                     </li>
                 </ul>
+                <div class="col-md-4 col-md-offset-3 right">
+                    <form method="post" action="{% url 'search_post' %}" class="search-form">
+                        {% csrf_token %}
+                        <div class="form-group has-feedback">
+                        <label for="search" class="sr-only">Search</label>
+                        <input type="text" class="form-control" name="search" id="search" placeholder="search a post">
+                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                        </div>
+                    </form>
+                </div>
             </div>
             <!-- /.navbar-collapse -->
         </div>

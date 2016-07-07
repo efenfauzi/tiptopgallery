@@ -15,32 +15,30 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from dashboard_admin import views as dab
+from dashboard_admin import views as site
 from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    # url(r'^$', dab.index, name='index'),
-    url(r'^$', dab.index_new, name='index_new'),
-    url(r'^upload/$', dab.post, name='post'),
+    # url(r'^$', site.index, name='index'),
+    url(r'^$', site.index_new, name='index_new'),
 
-    url(r'^gallery/image=(?P<post_id>[^/]+).html$', dab.detail_new, name='detail_new'),
-    url(r'^gallery/image=(?P<post_id>[^/]+).html/rename$', dab.rename_data, name='rename_data'),
-    url(r'^gallery/image=(?P<post_id>[^/]+).html/zip$', dab.zip_post, name='zip_post'),
+    url(r'^gallery/image=(?P<post_id>[^/]+).html$', site.detail_new, name='detail_new'),
+    url(r'^gallery/image=(?P<post_id>[^/]+).html/rename$', site.rename_data, name='rename_data'),
+    url(r'^gallery/image=(?P<post_id>[^/]+).html/zip$', site.zip_post, name='zip_post'),
 
-    # url(r'^detail/(?P<post_id>[0-9]+)/$', dab.detail, name='detail'),
-    url(r'^scrap/$', dab.image_scrapper, name='image_scrapper'),
-    url(r'^output/$', dab.list_image, name='list_image'),
-    url(r'^export/$', dab.export_image, name='export_image'),
-    url(r'^zip/$', dab.zip_file, name='zip_file'),
-    url(r'^generate_uuid/$', dab.generate_uuid, name='generate_uuid'),
-    url(r'^post/$', dab.export_to_post, name='export_to_post'),
-    url(r'^delete/(?P<x>[^/]+)$', dab.delete_one, name='delete_one'),
-    url(r'^category/search=(?P<name>[^/]+).html$', dab.category_post, name='category_post'),
-    url(r'^populer.html$', dab.populer_post, name='populer_post'),
-
-    # url(r'^delete_one/$', dab.delete_one, name='delete_one'),
+    # url(r'^detail/(?P<post_id>[0-9]+)/$', site.detail, name='detail'),
+    url(r'^scrap/$', site.image_scrapper, name='image_scrapper'),
+    url(r'^output/$', site.list_image, name='list_image'),
+    url(r'^export/$', site.export_image, name='export_image'),
+    url(r'^zip/$', site.zip_file, name='zip_file'),
+    url(r'^generate_uuid/$', site.generate_uuid, name='generate_uuid'),
+    url(r'^post/$', site.export_to_post, name='export_to_post'),
+    url(r'^delete/(?P<x>[^/]+)$', site.delete_one, name='delete_one'),
+    url(r'^category/search=(?P<name>[^/]+).html$', site.category_post, name='category_post'),
+    url(r'^populer.html$', site.populer_post, name='populer_post'),
+    url(r'^search.html$', site.search_post, name='search_post'),
 
 
 ]

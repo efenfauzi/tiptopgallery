@@ -85,40 +85,13 @@ def detail_new(request, post_id):
 
 	return render(request, 'detail.html', {'data': data, 'category':category, 'populer':populer, 'recent':recent})
 
-def post(request):
-
-	ImageFormSet = modelformset_factory(PostImage, form=ImageForm, extra=3)
-
-	if request.method == 'POST':
-
-		postForm = PostForm(request.POST)
-		formset = ImageFormSet(request.POST, request.FILES, queryset=PostImage.objects.none())
-
-		if postForm.is_valid() and formset.is_valid():
-
-			post_form = postForm.save(commit=False)
-			post_form.save()
-
-			for form in formset.cleaned_data:
-				image = form['images']
-				photo = PostImage(post=post_form, image=image)
-				photo.save()
-				messages.success(request,"Yeeew,check it out on the home page!")
-			return HttpResponseRedirect("/")
-		else:
-			print postForm.errors, formset.errors
-	else:
-		postForm = PostForm()
-		formset = ImageFormSet(queryset=PostImage.objects.none())
-	return render(request, 'upload.html', {'postForm': postForm, 'formset': formset},context_instance=RequestContext(request))
-
 
 def image_scrapper(request):
 	# print scrap
 	if request.method == 'POST':	
 		if request.POST.get('url'):
 			url = request.POST.get('url')
-			path = "media/image_download"
+			path = "{0}/image_download".format(settings.MEDIA_ROOT)
 			subprocess.call("image-scraper {0} -s {1}".format(url, path), shell=True)
 			return HttpResponseRedirect('/output')    #<b>scrapping image berhasil</b><br><a href='/output'>disini</a>)
 
@@ -132,6 +105,8 @@ def list_image(request):
 	path = settings.TEMP_DIR_IMAGE 
 	datafile = os.listdir(path)
 	url_media = settings.URL_MEDIA
+
+	print url_media
 
 	# if request.POST.getlist('data'):
 	# 	request.session['datalist'] = request.POST.getlist('data')
@@ -417,3 +392,30 @@ def populer_post(request):
 
 	# print visitpost
 	return HttpResponse('view data')
+
+
+def search_post(request):
+
+	if request.method == 'POST':
+		search = request.POST.get('search')
+		print search
+
+		all = Post.objects.filter(title__contains=search)
+
+		print all
+
+	paginator = Paginator(all, 16) # Show 25 contacts per page
+	
+	page = request.GET.get('page')
+    
+	try:
+		data = paginator.page(page)
+	except PageNotAnInteger:
+		# If page is not an integer, deliver first page.
+		data = paginator.page(1)
+	except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+		data = paginator.page(paginator.num_pages)
+
+	# return HttpResponse("data")
+	return render(request, 'search.html', {'search': search,'data': data,})

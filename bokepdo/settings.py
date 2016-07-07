@@ -138,11 +138,12 @@ STATICFILES_DIRS = [
 # MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 # MEDIA_URL = '/media/'
 
-MEDIA_ROOT = ('var/www/html/bokepdo/media')
-MEDIA_URL = ('http:127.0.0.1/bokepdo/media/')
+MEDIA_ROOT = ('/var/www/html/bokepdo/media')
+MEDIA_URL = ('http://localhost/bokepdo/media/')
 
 
 TEMP_DIR_IMAGE = MEDIA_ROOT+'/image_download' 
-URL_MEDIA = 'localhost/media/image_download/'
+URL_MEDIA = MEDIA_URL+'image_download'
 ZIP_MEDIA = MEDIA_ROOT+'/zip' 
 IMAGE_DIR = MEDIA_ROOT+'/image'
+
