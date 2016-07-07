@@ -43,7 +43,7 @@
 
     a:hover,
     a:focus {
-      color: none !important;
+      color: transparent !important;
     }
 
 </style>
@@ -62,7 +62,7 @@
         <div class="col-xs-8 related_post">
             {% for y in postdata %}
             <a data-toggle="tooltip" title="{{ y.post.title }}" href="{% url 'detail_new' y.post.url_id %}">
-            <img class="thumbs" src="/media/{{ y.post.get_thumb_image }}" >
+            <img class="thumbs" src="{{ y.post.get_thumb_image }}" >
             </a>
             {% endfor %} 
 

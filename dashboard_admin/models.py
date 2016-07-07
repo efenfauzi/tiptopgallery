@@ -41,16 +41,25 @@ class Post(models.Model):
 			return 0
 
 	def get_thumb_image(self):
+		# img = self.images.count()
+
+		# thumb = PostImage.objects.filter(post=self.id)
+
+		# # print thumb.values('thumbs')
+		# try:
+		# 	if img != 0: 
+		# 		random_thumb = random.randrange(int(img))
+		# 		image_random = thumb.values_list('thumbs', flat=True)[random_thumb]
+		# 		return image_random
+		# except:
+		# 	return 0
 		img = self.images.count()
-
-		thumb = PostImage.objects.filter(post=self.id)
-
-		# print thumb.values('thumbs')
+		# print img
 		try:
 			if img != 0: 
 				random_thumb = random.randrange(int(img))
-				image_random = thumb.values_list('thumbs', flat=True)[random_thumb]
-				return image_random
+				image_random = self.images.all()[random_thumb]
+				return image_random.thumbs.url
 		except:
 			return 0
 

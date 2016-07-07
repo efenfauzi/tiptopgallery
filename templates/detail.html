@@ -102,7 +102,7 @@
       <div class="panel-body">
        {% for pop in populer %}
         <a data-toggle="tooltip" title="{{ pop.post.title }}" href="/gallery/image={{ pop.post.url_id }}.html">
-        <img class="thumbs" src="/media/{{ pop.post.get_thumb_image }}">
+        <img class="thumbs" src="{{ pop.post.get_thumb_image }}">
         </a>
         {% endfor %}
       </div>
@@ -113,7 +113,7 @@
   <div class="panel-body">
    {% for rec in recent %}
     <a data-toggle="tooltip" title="{{ rec.title }}" href="/gallery/image={{ rec.url_id }}.html">
-    <img class="thumbs" src="/media/{{ rec.get_thumb_image }}">
+    <img class="thumbs" src="{{ rec.get_thumb_image }}">
     </a>
     {% endfor %}
   </div>

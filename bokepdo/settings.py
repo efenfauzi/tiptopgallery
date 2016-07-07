@@ -25,8 +25,8 @@ SECRET_KEY = 'm_1w4)6%-9p4k%elvr-y#nvqcwj9+vm8ilvr=!i!d*77(!tf7_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -64,6 +64,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # 'django.template.context_processors.media',
             ],
         },
     },
@@ -118,8 +119,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR,'static')
-STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR,'static')
+# STATIC_URL = '/static/'
+
+
+STATIC_ROOT = ('/var/www/html/bokepdo/static')
+STATIC_URL = ('localhost/bokepdo/static/')
 
 STATICFILES_FINDERS = [
 	'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -130,10 +135,14 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "public"),
 ]
 
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
-MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+# MEDIA_URL = '/media/'
+
+MEDIA_ROOT = ('var/www/html/bokepdo/media')
+MEDIA_URL = ('http:127.0.0.1/bokepdo/media/')
+
 
 TEMP_DIR_IMAGE = MEDIA_ROOT+'/image_download' 
-URL_MEDIA = 'http://localhost:8000/media/image_download/'
+URL_MEDIA = 'localhost/media/image_download/'
 ZIP_MEDIA = MEDIA_ROOT+'/zip' 
 IMAGE_DIR = MEDIA_ROOT+'/image'

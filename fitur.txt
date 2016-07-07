@@ -11,3 +11,6 @@ NEXT
 - disclaimer
 - fungsi search
 - get image random only potrait
+
+BACKLOG
+-renaming file and imagefield
