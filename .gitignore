@@ -164,6 +164,7 @@ ClientBin/
 media/
 /venv
 venv/
+/static
 
 *.sqlite3
 
