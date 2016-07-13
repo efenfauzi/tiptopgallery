@@ -56,9 +56,6 @@
         <h1 class="page-header">TipTop Category Tags ~ {{ cat }}</h1>
     </div>
     
-    <div class="panel panel-default">
-      <div class="panel-heading">Panel Header</div>
-      <div class="panel-body">
         <div class="col-xs-8 related_post">
             {% for y in postdata %}
             <a data-toggle="tooltip" title="{{ y.post.title }}" href="{% url 'detail_new' y.post.url_id %}">
@@ -66,41 +63,54 @@
             </a>
             {% endfor %} 
 
-                  {% if postdata %}
-    <div class="center"> 
-      <ul class="pagination">
-          {% if postdata.has_previous %}
-              <li><a href="?page={{ postdata.previous_page_number }}">Previous</a></li>
+            {% if postdata %}
+              <div class="center"> 
+                <ul class="pagination">
+                {% if postdata.has_previous %}
+                    <li><a href="?page={{ postdata.previous_page_number }}">Previous</a></li>
+                {% endif %}
+                {% for pg in postdata.paginator.page_range %}
+                    {% if postdata.number == pg %}
+                        <li class="active"><a href="?page={{ pg }}">{{ pg }}</a></li>
+                    {% else %}
+                        <li><a href="?page={{ pg }}">{{ pg }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if postdata.has_next %}
+                    <li><a href="?page={{ postdata.next_page_number }}">Next</a></li>
+                {% endif %}
+              </ul>
+            </div>
           {% endif %}
-          {% for pg in postdata.paginator.page_range %}
-              {% if postdata.number == pg %}
-                  <li class="active"><a href="?page={{ pg }}">{{ pg }}</a></li>
-              {% else %}
-                  <li><a href="?page={{ pg }}">{{ pg }}</a></li>
-              {% endif %}
-          {% endfor %}
-          {% if postdata.has_next %}
-              <li><a href="?page={{ postdata.next_page_number }}">Next</a></li>
-          {% endif %}
-      </ul>
-    </div>
-    {% endif %}
-        </div>
 
+        </div>
 
 
         <div class="col-xs-2 icon_category">
-                <h2 class="page-header">Browse category</h2>
-            {% for cat in all_category %}
-                <a href="/category/search={{ cat.name }}.html">
-                    <img src="{{ cat.icon_image.url }}">
-                </a>
+            <h2 class="page-header">Browse Archives</h2>
+<!--             {% for cat in all_category %}
+              <a href="/category/search={{ cat.name }}.html">
+                <img src="{{ cat.icon_image.url }}">
+              </a>
             {% endfor %}
+ -->
+        {% load base_text %}
+        <h2 class="panel-title">
+          {% regroup post by created|date:'F Y' as archives %}
+          {% for pst in archives %}
+          <a data-toggle="collapse" href="#{{ pst.grouper|lower_replace }}">{{ pst.grouper }}</a>
+        </h2>
+          <div id="{{ pst.grouper|lower_replace }}" class="panel-collapse collapse">
+            <ul class="list-group">
+              {% for data in pst.list %}
+              <li class="list-group-item"><a href="{% url 'detail_new' data.url_id %}">
+              {{ data.title }}</a>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endfor %}
         </div>
-      </div>
-    </div>
-    
-
 
 </div>
 

@@ -385,6 +385,8 @@ def category_post(request, name):
 	category = CategoryPost.objects.filter(category__status=1)
 	data =  category.filter(category__name=name)
 	cat = data.values_list('category__name', flat=True)[0]
+
+	post = Post.objects.all()
 	# print x
 	paginator = Paginator(data, 10) # Show 25 contacts per page
 	
@@ -399,7 +401,7 @@ def category_post(request, name):
         # If page is out of range (e.g. 9999), deliver last page of results.
 		postdata = paginator.page(paginator.num_pages)
 
-	return render(request, 'category.html', {'postdata': postdata, 'category':category, 'cat':cat, 'all_category': all_category})
+	return render(request, 'category.html', {'postdata': postdata, 'category':category, 'cat':cat, 'all_category': all_category, 'post':post})
 
 def populer_post(request):
 	# post = Post.objects.all()

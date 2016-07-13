@@ -12,4 +12,8 @@ def footer_text(request):
 	footer = SiteText.objects.get(name='footer')
 	return footer.text
 
-# register.simple_tag(footer_text)
+@register.filter(name='lower_replace')
+def lower_replace(value):
+	return str(value.lower().replace(' ',''))
+
+# register.simple_tag(lower_replace)
