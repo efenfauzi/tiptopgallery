@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'bokepdo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'image.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'data.sqlite3'),
     }
 }
 
@@ -124,7 +124,7 @@ USE_TZ = True
 
 
 STATIC_ROOT = ('/var/www/html/bokepdo/static')
-STATIC_URL = ('localhost/bokepdo/static/')
+STATIC_URL = ('http://localhost/bokepdo/static/')
 
 STATICFILES_FINDERS = [
 	'django.contrib.staticfiles.finders.FileSystemFinder',

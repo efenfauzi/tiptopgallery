@@ -17,6 +17,7 @@
     <!-- Custom CSS -->
     <link href="/static/css/thumbnail-gallery.css" rel="stylesheet">
     <link href="/static/css/search-expandle.css" rel="stylesheet">
+    <link href="/static/css/footer.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -90,12 +91,16 @@
     {% block content %}
     {% endblock %}
         <!-- Footer -->
-        <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p>Copyright &copy; Your Website 2014</p>
-                </div>
-            </div>
+        {% load base_text %}
+
+        <!-- The content of your page would go here. -->
+
+        <footer class="footer-basic-centered">
+
+            <p class="footer-company-motto">TipTop Gallery</p>
+
+            <p class="footer-company-name">copyright &copy; 2015</p>
+
         </footer>
 
     </div>

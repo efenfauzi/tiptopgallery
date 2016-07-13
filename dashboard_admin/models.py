@@ -198,6 +198,7 @@ class CategoryPost(models.Model):
 class VisitPagePost(models.Model):
 	post = models.ForeignKey(Post, related_name='visitedpost')
 	count = models.IntegerField(default=0)
+	date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
 	def __str__(self):
 		return str(self.count)
@@ -206,3 +207,21 @@ class VisitPagePost(models.Model):
 		db_table = 'visit_posts'
 		verbose_name = 'Visit Post'
 		verbose_name_plural = 'Visit Post'
+
+	def date_counter(self):
+		return self.date.strftime('%Y-%m-%d')
+
+
+class SiteText(models.Model):
+	name = models.CharField(max_length=255) 
+	text = models.TextField()
+
+
+	def __str__(self):
+		return str(self.name)
+
+
+	class Meta:
+		db_table = 'site_text'
+		verbose_name = 'a description site'
+		verbose_name_plural = 'a description sites'

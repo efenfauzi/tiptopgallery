@@ -5,6 +5,7 @@ import os
 import datetime
 import humanize
 path = settings.TEMP_DIR_IMAGE 
+from dashboard_admin.models import SiteText
 
 register = template.Library()
 
@@ -41,3 +42,4 @@ def get_name(filename):
 	# 	print t
 	# except:
 	# 	return "no file"
+

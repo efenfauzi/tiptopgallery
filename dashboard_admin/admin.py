@@ -39,7 +39,12 @@ class CategoryPostAdmin(admin.ModelAdmin):
 
 
 class VisitPagePostAdmin(admin.ModelAdmin):
-	list_display = 'post', 'count', 
+	list_display = 'post', 'count', 'date_counter' 
+	ordering = ['-date',]
+
+
+class SiteTextAdmin(admin.ModelAdmin):
+	list_display = 'name', 'text'
 
 
 admin.site.register(Post, PostAdmin)
@@ -47,3 +52,4 @@ admin.site.register(Post, PostAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(CategoryPost, CategoryPostAdmin)
 admin.site.register(VisitPagePost, VisitPagePostAdmin)
+admin.site.register(SiteText, SiteTextAdmin)

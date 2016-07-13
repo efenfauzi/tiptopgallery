@@ -68,13 +68,28 @@ def detail_new(request, post_id):
 
 	if request.method == 'GET':
 		counter = VisitPagePost.objects.filter(post=data).last()
-		if counter is None:
+		date = datetime.datetime.now().strftime('%Y-%m-%d')
+
+		print date
+
+	
+		try:
+			date_count =  counter.date.strftime('%Y-%m-%d')
+			print date_count
+		except:
+			date_count = datetime.datetime.now()
+			print "tanggal sekarang %s" %datetime.datetime.now()
+
+		if counter is None or date != date_count:
 			# print "save baru"
-			VisitPagePost(post=data, count=1).save()
+			VisitPagePost(post=data, count=1, date=datetime.datetime.now()).save()
 		else:
 			# print int(counter.count)+1
-			VisitPagePost.objects.filter(post=data).update(count=int(counter.count)+1)
-	
+			# if date == counter.date.strftime('%Y-%m-%d'):
+			VisitPagePost.objects.filter(post=data).update(count=int(counter.count)+1, date=datetime.datetime.now())
+			# else:
+			# 	VisitPagePost(post=data, count=1, date=datetime.datetime.now()).save()
+
 	# print category
 
 	populer = VisitPagePost.objects.all().order_by('-count')[:5]
@@ -419,3 +434,14 @@ def search_post(request):
 
 	# return HttpResponse("data")
 	return render(request, 'search.html', {'search': search,'data': data,})
+
+
+def site_text_base(request):
+	data = SiteText.objects.all()
+
+	footer = data.get(name='footer')
+
+	print footer.text
+
+
+	return render(request, 'base.html', {'data':data, 'footer': footer})
