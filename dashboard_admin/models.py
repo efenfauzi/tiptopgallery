@@ -225,3 +225,29 @@ class SiteText(models.Model):
 		db_table = 'site_text'
 		verbose_name = 'a description site'
 		verbose_name_plural = 'a description sites'
+
+
+class AdsPost(models.Model):
+	post = models.ForeignKey(Post)
+	ads = models.TextField()
+
+
+	def __str__(self):
+		return str(self.ads)
+
+	class Meta:
+		db_table = 'posts_ads'
+		verbose_name = 'ads to post'
+		verbose_name_plural = 'ads to posts'
+
+class ModelNamePost(models.Model):
+	post = models.ForeignKey(Post)
+	name = models.CharField(max_length=100)
+
+	def __str__(self):
+		return str(self.name)
+
+	class Meta:
+	 	db_table = 'models_posts'
+		verbose_name = 'model name related post'
+		verbose_name_plural = 'model name related posts'

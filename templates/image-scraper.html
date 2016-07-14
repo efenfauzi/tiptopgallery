@@ -7,6 +7,10 @@
         text-align: center;
 
     }
+
+    .gotobutton{
+        float: right;
+    }
 </style>
 
 {% endblock %}
@@ -50,7 +54,7 @@
    			 </form>
         </div>
 
-<div class="col-lg-8" align="right">
+<div class="col-lg-8 gotobutton" align="right">
   <a href="{% url 'list_image' %}" class="btn btn-primary">Goto Output</a>
 </div>
 {% endblock content %}
