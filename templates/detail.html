@@ -16,7 +16,14 @@
     .tags {
       border-radius: 5px 5px 5px;
       background: #BADA55;
-      padding: 5px;
+      padding: 8px;
+    text-shadow: 2px 2px 4px #BFBFBF; 
+    box-shadow: 2px 2px 3px rgba(110, 18, 242);
+    font-weight: bold;
+    }
+
+    a.tags-link:hover{
+        text-decoration: none;
     }
     .panel-body{
         padding: 2px;
@@ -91,7 +98,7 @@
           <div class="panel-footer">
           Tags : 
           {% for cat in category %}
-            <span class="tags"><a href="/category/search={{ cat.category.name }}.html">{{ cat.category.name }}</a>
+            <span class="tags"><a href="/category/search={{ cat.category.name }}.html" class="tags-link">{{ cat.category.name }}</a>
             </span>&nbsp;
             {% endfor %}
           </div>

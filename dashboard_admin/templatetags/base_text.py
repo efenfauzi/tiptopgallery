@@ -16,4 +16,6 @@ def footer_text(request):
 def lower_replace(value):
 	return str(value.lower().replace(' ',''))
 
-# register.simple_tag(lower_replace)
+@register.filter(name='url_name')
+def url_name(value):
+	return str(value.lower().replace(' ','-'))

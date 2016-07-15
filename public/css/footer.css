@@ -8,6 +8,9 @@
 
 	/*padding: 45px;*/
 	margin-top: 80px;
+	position: relative;
+	height: 80px;
+	bottom: -50px;
 }
 
 .footer-basic-centered .footer-company-motto{

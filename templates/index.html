@@ -3,19 +3,48 @@
 {% block title %}TipTop Gallery Homepage{% endblock %}
 {% block extrastyle %}
 <style type="text/css">
-.img-responsive {
-  height: 225px !important ;
-  width: auto;
-  opacity: 0.6
-    }
-.img-responsive:hover{
-    opacity: 1.0;
-    filter: alpha(opacity=100); /* For IE8 and earlier */
-    }
-div.center {
-    text-align: right;
-    margin-top: 5px;
-}
+  .img-responsive {
+    height: 225px !important ;
+    width: auto;
+    opacity: 0.6
+      }
+  .img-responsive:hover{
+      opacity: 1.0;
+      filter: alpha(opacity=100); /* For IE8 and earlier */
+      }
+  div.center {
+      text-align: right;
+      margin-top: 5px;
+  }
+  .title{
+    border-radius: 15px 15px 15px 15px;
+    text-align: center;
+  }
+
+  .model-name{
+    width: auto;
+    background-color: #4CAF50;
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3); 
+    margin: 10px 10px 8px 8px;
+    border: 5px;
+    border-radius: 10px 10px 10px 3px;
+    padding: 10px;
+    color: #FFFFFF !important;
+    font-weight: bold;
+    height: auto;
+    position: relative;
+    float: left;
+    left: 10px;
+  }
+
+  a.model-name:hover{
+    background-color: #FFFFFF;
+    text-decoration: none;
+    color: #DE1FE3 !important;
+    text-shadow: 2px 2px 4px #BFBFBF; 
+    box-shadow: 2px 2px 3px rgba(110, 18, 242); 
+ 
+  }
 </style>
 
 {% endblock %}
@@ -34,10 +63,10 @@ $(document).ready(function(){
 			{% for x in data %}
             <div class="col-lg-3 col-md-4 col-xs-6 thumb">
                 <a data-toggle="tooltip" title="{{ x.title }}" class="thumbnail" href="{% url 'detail_new' x.url_id %}">
-                    <img class="img-responsive" src="{{ x.get_thumb_image }}" alt="" >
+                    <img class="img-responsive box" src="{{ x.get_thumb_image }}" alt="" >
                 </a>
-                <div class="panel panel-primary">
-                    <div class="panel-heading">{{ x.title|upper }}</div>
+                <div class="panel panel-primary title">
+                    <div class="panel-heading title">{{ x.title|upper }}</div>
                 </div>
             </div>
             {% endfor %}
@@ -66,4 +95,15 @@ $(document).ready(function(){
     </div>
     {% endif %}
 
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">List Models Gallery</div>
+         <div class="panel-body">
+         {% load base_text %}
+         {% for name in model_name %}
+         <a href="{% url 'model_list' name.name|url_name %}" class="model-name">{{ name.name|upper }}</a>
+         {% endfor %}
+         </div>
+        </div>
+        
 {% endblock content %}

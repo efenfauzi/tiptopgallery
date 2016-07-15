@@ -46,6 +46,12 @@ class VisitPagePostAdmin(admin.ModelAdmin):
 class SiteTextAdmin(admin.ModelAdmin):
 	list_display = 'name', 'text'
 
+class ModelNameAdmin(admin.ModelAdmin):
+	list_display = 'name', 'description',
+
+class ModelNamePostAdmin(admin.ModelAdmin):
+	list_display = 'post', 'name',
+
 
 admin.site.register(Post, PostAdmin)
 # admin.site.register(PostImage, PostImageAdmin)
@@ -53,3 +59,5 @@ admin.site.register(Category, CategoryAdmin)
 admin.site.register(CategoryPost, CategoryPostAdmin)
 admin.site.register(VisitPagePost, VisitPagePostAdmin)
 admin.site.register(SiteText, SiteTextAdmin)
+admin.site.register(ModelNamePost, ModelNamePostAdmin)
+admin.site.register(ModelName, ModelNameAdmin)

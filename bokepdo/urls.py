@@ -39,6 +39,8 @@ urlpatterns = [
     url(r'^category/search=(?P<name>[^/]+).html$', site.category_post, name='category_post'),
     url(r'^populer.html$', site.populer_post, name='populer_post'),
     url(r'^search.html$', site.search_post, name='search_post'),
+    url(r'^list/search=(?P<name>[^/]+).html$', site.model_list, name='model_list'),
+
 
 
 ]

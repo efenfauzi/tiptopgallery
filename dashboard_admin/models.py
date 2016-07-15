@@ -87,6 +87,7 @@ class Post(models.Model):
 		db_table = 'posts'
 		verbose_name = u'Posting Gambar'
 		verbose_name_plural = u'Posting Gambar'
+		ordering = ['-created',]
 
 
 class PostImage(models.Model):
@@ -240,9 +241,23 @@ class AdsPost(models.Model):
 		verbose_name = 'ads to post'
 		verbose_name_plural = 'ads to posts'
 
+
+class ModelName(models.Model):
+	name = models.CharField(max_length=100)
+	description = models.TextField(null=True, blank=True)
+
+	def __str__(self):
+		return str(self.name)
+
+	class Meta:
+	 	db_table = 'models_names'
+		verbose_name = 'model names'
+		verbose_name_plural = 'model names'
+
+
 class ModelNamePost(models.Model):
 	post = models.ForeignKey(Post)
-	name = models.CharField(max_length=100)
+	name = models.ForeignKey(ModelName)
 
 	def __str__(self):
 		return str(self.name)

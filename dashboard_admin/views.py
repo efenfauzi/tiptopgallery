@@ -33,6 +33,7 @@ def randomword(length):
 
 def index_new(request):
 	all = Post.objects.all().order_by('-created')
+	model_name = ModelName.objects.all()
 	# generate_uuid = all.values('url_id')
 
 	# date = datetime.datetime.now().strftime('%H:%M:%S')
@@ -56,7 +57,7 @@ def index_new(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
 		data = paginator.page(paginator.num_pages)
 
-	return render(request, 'index.html', {'data':data})
+	return render(request, 'index.html', {'data':data, 'model_name':model_name})
 	
 # def detail_new(request, post_id):
 #     data = get_object_or_404(Post, url_id=post_id)
@@ -315,6 +316,7 @@ def export_to_post(request):
 	unique = randomword(4)
 
 	category = Category.objects.filter(status=1)
+	models_name = ModelName.objects.all()
 
 	if request.method == 'POST':
 		data = request.POST.getlist('data')
@@ -348,12 +350,18 @@ def export_to_post(request):
 		print cat
 		for a in cat:
 			CategoryPost.objects.get_or_create(post=post, category_id=int(a))
+			print ''
 
+		artis = request.POST.get('artis')
+
+		print artis
+
+		ModelNamePost.objects.get_or_create(post=post, name_id=int(artis))
 
 		return HttpResponseRedirect('/post')
 
 			
-	return render(request, 'export_to_post.html', {'datafile': datafile, 'url_media': url_media, 'path':path, 'category': category}) #{'form':form, }
+	return render(request, 'export_to_post.html', {'datafile': datafile, 'url_media': url_media, 'path':path, 'category': category, 'models_name': models_name}) #{'form':form, }
 
 
 def zip_post(request, post_id):
@@ -386,7 +394,7 @@ def category_post(request, name):
 	data =  category.filter(category__name=name)
 	cat = data.values_list('category__name', flat=True)[0]
 
-	post = Post.objects.all()
+	post = Post.objects.all().order_by('-created')
 	# print x
 	paginator = Paginator(data, 10) # Show 25 contacts per page
 	
@@ -417,33 +425,54 @@ def search_post(request):
 		search = request.POST.get('search')
 		print search
 
-		all = Post.objects.filter(title__contains=search)
+		post = Post.objects.filter(title__contains=search)
+		print post
 
-		print all
+		category = CategoryPost.objects.filter(category__name=search)
+		print category
 
-	paginator = Paginator(all, 16) # Show 25 contacts per page
+			# all = Post.objects.filter(title__contains=search)
+
+			# print all
+
+	# paginator = Paginator(all, 16) # Show 25 contacts per page
 	
-	page = request.GET.get('page')
+	# page = request.GET.get('page')
     
-	try:
-		data = paginator.page(page)
-	except PageNotAnInteger:
-		# If page is not an integer, deliver first page.
-		data = paginator.page(1)
-	except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-		data = paginator.page(paginator.num_pages)
+	# try:
+	# 	data = paginator.page(page)
+	# except PageNotAnInteger:
+	# 	# If page is not an integer, deliver first page.
+	# 	data = paginator.page(1)
+	# except EmptyPage:
+ #        # If page is out of range (e.g. 9999), deliver last page of results.
+	# 	data = paginator.page(paginator.num_pages)
 
 	# return HttpResponse("data")
-	return render(request, 'search.html', {'search': search,'data': data,})
+	return render(request, 'search.html', {'search': search, 'post':post, 'category':category})
 
 
-def site_text_base(request):
-	data = SiteText.objects.all()
+def model_list(request, name):
+	post = Post.objects.all()
 
-	footer = data.get(name='footer')
+	name = name.replace('-', ' ')
+	print name
 
-	print footer.text
+	model_list = ModelNamePost.objects.filter(name__name__contains=str(name))
 
+	print model_list
 
-	return render(request, 'base.html', {'data':data, 'footer': footer})
+	paginator = Paginator(model_list.order_by('-post__created'), 3) # Show 25 contacts per page
+	
+	page = request.GET.get('page')
+
+	try:
+		postdata = paginator.page(page)
+	except PageNotAnInteger:
+		# If page is not an integer, deliver first page.
+		postdata = paginator.page(1)
+	except EmptyPage:
+		# If page is out of range (e.g. 9999), deliver last page of results.
+		postdata = paginator.page(paginator.num_pages)
+
+	return render(request, 'models.html', {'postdata': postdata, 'name':name, 'post':post})

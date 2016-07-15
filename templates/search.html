@@ -31,10 +31,12 @@ $(document).ready(function(){
 {% block content %}
         <div class="row">
             <h3 class="page-header">Search for words : <b><i><u>{{ search|lower }}</b></i></u></h3>
-            {% if data|length = 0 %}
+            <div class="col-lg-12">
+            {% if post|length = 0 %}
             <h1>Nothing Found</h1> 
             {% else %}
-			{% for x in data %}
+
+	         {% for x in post %}
             <div class="col-lg-3 col-md-4 col-xs-6 thumb">
                 <a data-toggle="tooltip" title="{{ x.title }}" class="thumbnail" href="{% url 'detail_new' x.url_id %}">
                     <img class="img-responsive" src="{{ x.get_thumb_image }}" alt="" >
@@ -44,7 +46,20 @@ $(document).ready(function(){
                 </div>
             </div>
             {% endfor %}
+           {% for x in category %}
+            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                <a data-toggle="tooltip" title="{{ x.post.title }}" class="thumbnail" href="{% url 'detail_new' x.post.url_id %}">
+                    <img class="img-responsive" src="{{ x.post.get_thumb_image }}" alt="" >
+                </a>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">{{ x.post.title|upper }}</div>
+                </div>
+            </div>
+            {% endfor %}
+
+
             {% endif %}
+        </div>
         </div>
         <hr>
 
