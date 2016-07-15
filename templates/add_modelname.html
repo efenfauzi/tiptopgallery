@@ -20,12 +20,12 @@
  {% block content %}
  <div class="row">
  	<div class="col-lg-6">
-	 <form class="form-horizontal" role="form" method="post" onsubmit=closebutton()>
+	 <form class="form-horizontal" role="form" method="post">
 	 	{% csrf_token %}
 	  <div class="form-group">
 	    <div class="col-sm-6">
 	    <label for="name">Name models:</label>
-	      <input name="name" type="name" class="form-control" id="name" placeholder="Enter name">
+	      <input name="name" type="name" class="form-control" id="name" placeholder="Enter name" required>
 	    </div>
 	  </div>
 	  <div class="form-group">
@@ -37,7 +37,7 @@
 
 	  <div class="form-group">
 	    <div class="col-sm-4">
-	      <button type="submit" class="btn btn-default">Save</button>
+	      <button type="submit" class="btn btn-default" onclick=closebutton()>Save</button>
 	    </div>
 	  </div>
 	</form>

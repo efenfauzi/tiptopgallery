@@ -517,7 +517,13 @@ def add_modelname(request):
 		name = request.POST.get('name')
 		description = request.POST.get('description')
 
-		ModelName(name=name, description=description).save()
+		print name
+
+		try:
+			if not name == '':
+				ModelName(name=name, description=description).save()
+		except:
+			pass
 
 
 
