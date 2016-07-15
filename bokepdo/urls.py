@@ -23,6 +23,8 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     # url(r'^$', site.index, name='index'),
     url(r'^$', site.index_new, name='index_new'),
+    url(r'^login/$', site.login_user, name='login_user'),
+    url (r'^logout/$', 'django.contrib.auth.views.logout', name='logout', kwargs={'next_page': '/'}),
 
     url(r'^gallery/image=(?P<post_id>[^/]+).html$', site.detail_new, name='detail_new'),
     url(r'^gallery/image=(?P<post_id>[^/]+).html/rename$', site.rename_data, name='rename_data'),
@@ -40,6 +42,8 @@ urlpatterns = [
     url(r'^populer.html$', site.populer_post, name='populer_post'),
     url(r'^search.html$', site.search_post, name='search_post'),
     url(r'^list/search=(?P<name>[^/]+).html$', site.model_list, name='model_list'),
+    url(r'^addmodel.html$', site.add_modelname, name='add_modelname'),
+
 
 
 

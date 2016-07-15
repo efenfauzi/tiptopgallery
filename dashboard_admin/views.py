@@ -15,7 +15,32 @@ import string
 import uuid
 from shutil import copyfile, move, make_archive
 from django.core.urlresolvers import reverse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
 # Create your views here.
+
+
+# def login_user(request):
+# 	return render(request,'login.html')
+
+def login_user(request):
+	logout(request)
+	redirect_to = request.GET.get('next', '')
+	username = password = ''
+	if request.POST:
+		username = request.POST.get('username')
+		password = request.POST.get('password')
+
+		print username
+		print password
+
+	user = authenticate(username=username, password=password)
+	if user is not None:
+		if request.user.is_authenticated:
+			login(request, user)
+		return HttpResponseRedirect(redirect_to)  
+	return render_to_response('login.html', context_instance=RequestContext(request))
+
 def index(request):
 	data = Post.objects.all()
 	return render(request, 'index.html', {'data':data})
@@ -101,7 +126,7 @@ def detail_new(request, post_id):
 
 	return render(request, 'detail.html', {'data': data, 'category':category, 'populer':populer, 'recent':recent})
 
-
+@login_required(login_url='/login/')
 def image_scrapper(request):
 	# print scrap
 	if request.method == 'POST':	
@@ -116,7 +141,7 @@ def image_scrapper(request):
 
 	return render(request, 'image-scraper.html') #{'form':form, }
 
-
+@login_required(login_url='/login/')
 def list_image(request):
 	path = settings.TEMP_DIR_IMAGE 
 	datafile = os.listdir(path)
@@ -144,7 +169,7 @@ def list_image(request):
 		return HttpResponseRedirect('/output')
 	return render(request, 'list_image.html', {'datafile': datafile, 'url_media': url_media}) #{'form':form, }
 
-
+@login_required(login_url='/login/')
 def export_image(request):
 	path = settings.TEMP_DIR_IMAGE
 	dir_path = settings.BASE_DIR+'/media/' 
@@ -167,7 +192,7 @@ def export_image(request):
 	return HttpResponse('<b>Copy image berhasil</b><br><a href="/output">disini</a>')
 	# return render(request, 'list_image.html', {'datafile': datafile, 'url_media': url_media}) #{'form':form, }
 
-
+@login_required(login_url='/login/')
 def zip_file(request):
 	path = settings.TEMP_DIR_IMAGE 
 	datafile = os.listdir(path)
@@ -195,6 +220,7 @@ def zip_file(request):
 		# return HttpResponseRedirect('/zip')
 	return render(request, 'export_zip_image.html', {'datafile': datafile, 'url_media': url_media, 'path':path}) #{'form':form, }
 
+@login_required(login_url='/login/')
 def delete_one(request, x):
 	path = settings.TEMP_DIR_IMAGE 
 	url_media = settings.URL_MEDIA
@@ -225,6 +251,7 @@ def delete_one(request, x):
 	return HttpResponseRedirect('/output')
 	# return HttpResponseRedirect(reverse('delete_one'))
 
+@login_required(login_url='/login/')
 def generate_uuid(request):
 	all = Post.objects.all()
 	try:
@@ -236,7 +263,7 @@ def generate_uuid(request):
 
 	return HttpResponseRedirect('/')
 
-
+@login_required(login_url='/login/')
 def rename_data(request, post_id):
 	data = Post.objects.get(url_id=post_id)
 	image = PostImage.objects.filter(post=data.id)
@@ -306,6 +333,7 @@ def rename_data(request, post_id):
 	return HttpResponseRedirect("/")
 
 
+@login_required(login_url='/login/')
 def export_to_post(request):
 	path = settings.TEMP_DIR_IMAGE 
 	datafile = os.listdir(path)
@@ -356,14 +384,18 @@ def export_to_post(request):
 
 		print artis
 
-		ModelNamePost.objects.get_or_create(post=post, name_id=int(artis))
+		try:
+			if artis is not None:
+				ModelNamePost.objects.get_or_create(post=post, name_id=int(artis))
+		except:
+			pass
 
 		return HttpResponseRedirect('/post')
 
 			
 	return render(request, 'export_to_post.html', {'datafile': datafile, 'url_media': url_media, 'path':path, 'category': category, 'models_name': models_name}) #{'form':form, }
 
-
+@login_required(login_url='/login/')
 def zip_post(request, post_id):
 	data = get_object_or_404(Post, url_id=post_id)
 	zip_media = settings.ZIP_MEDIA
@@ -456,11 +488,11 @@ def model_list(request, name):
 	post = Post.objects.all()
 
 	name = name.replace('-', ' ')
-	print name
+	# print name
 
 	model_list = ModelNamePost.objects.filter(name__name__contains=str(name))
 
-	print model_list
+	# print model_list
 
 	paginator = Paginator(model_list.order_by('-post__created'), 3) # Show 25 contacts per page
 	
@@ -476,3 +508,17 @@ def model_list(request, name):
 		postdata = paginator.page(paginator.num_pages)
 
 	return render(request, 'models.html', {'postdata': postdata, 'name':name, 'post':post})
+
+@login_required(login_url='/login/')
+def add_modelname(request):
+	# data = ModelName.objects.all()
+
+	if request.method == 'POST':
+		name = request.POST.get('name')
+		description = request.POST.get('description')
+
+		ModelName(name=name, description=description).save()
+
+
+
+	return render(request, 'add_modelname.html')

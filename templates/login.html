@@ -1,1 +1,118 @@
-login.html
+{% extends "base.html" %}
+{% block title %}Login User {% endblock %}
+
+{% block extrastyle %}
+<style type="text/css">
+	body
+	 {
+background: rgb(0, 144, 245);
+background: -moz-linear-gradient(199deg, rgb(0, 144, 245) 9%, rgb(90, 140, 250) 98%);
+background: -webkit-linear-gradient(199deg, rgb(0, 144, 245) 9%, rgb(90, 140, 250) 98%);
+background: -o-linear-gradient(199deg, rgb(0, 144, 245) 9%, rgb(90, 140, 250) 98%);
+background: -ms-linear-gradient(199deg, rgb(0, 144, 245) 9%, rgb(90, 140, 250) 98%);
+background: linear-gradient(289deg, rgb(0, 144, 245) 9%, rgb(90, 140, 250) 98%);
+
+	}
+
+	div.member_signin {
+	    text-align: center;
+	}
+
+	div.member_signin  i.fa.fa-user {
+	    color: #FFF;
+	    background-color: #FFD202;
+	    border-radius: 500px;
+	    font-size: 36px;
+	    padding: 15px 20px 15px 20px;
+	}
+
+	div.fa_user {
+	    margin-top: -47px;
+	    margin-bottom: 15px;
+	}
+
+	p.member {
+	    font-size: 19px;
+	    color: #888888;
+	    margin-bottom: 20px;
+	}
+
+	button.login {
+	    width: 100%;
+	    text-transform: uppercase;
+	}
+
+	form.loginform div.input-group {
+	    width: 100%;
+	}
+
+	form.loginform input[type="text"], form.loginform input[type="password"] {
+	    color: #6C6C6C;
+	    text-align: center;
+	}
+
+	p.forgotpass {
+	    margin-top: 10px;
+	}
+
+	p.forgotpass a {
+	    color: #F5683D;
+	}
+    .navbar{
+    	display: none;
+    }
+	.footer-basic-centered{
+		display: none;
+	}
+
+	.signin{
+		-webkit-box-shadow: -3px 8px 19px 0px rgba(50, 50, 50, 0.65);
+		-moz-box-shadow:    -3px 8px 19px 0px rgba(50, 50, 50, 0.65);
+		box-shadow:         -3px 8px 19px 0px rgba(50, 50, 50, 0.65);
+	}
+</style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.css
+" rel="stylesheet">
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container" style="margin-top:10%">
+  <div class="col-md-3 col-md-offset-4">
+    <div class="panel member_signin">
+      <div class="panel-body signin">
+        <div class="fa_user">
+          <i class="fa fa-user"></i>
+        </div>
+        <p class="member">TipTop Gallery Login</p>
+        <form role="form" class="loginform" method="post">
+        	{% csrf_token %}
+	        {% if next %}
+	            <input type="hidden" name="next" value="{{ next }}" />
+	        {% endif %}
+          <div class="form-group">
+            <label for="InputEmail" class="sr-only">Email address</label>
+            <div class="input-group">
+              <input name="username" type="text" class="form-control" id="InputEmail"
+                placeholder="Username">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="InputPassword" class="sr-only">Password</label>
+            <div class="input-group">
+              <input name="password" type="password" class="form-control" id="InputPassword"
+                placeholder="Password">
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-md login">LOG IN</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock content %}

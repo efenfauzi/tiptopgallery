@@ -53,7 +53,7 @@
 
 <script>
 function clickadd() {
-    window.open("{% url 'admin:dashboard_admin_modelname_changelist' %}",  "_blank", "toolbar=no,scrollbars=yes,width=900,height=400");
+    window.open("{% url 'add_modelname' %}",  "_blank", "toolbar=no,scrollbars=yes,width=900,height=400");
 }
 </script>
 {% endblock %}
@@ -127,10 +127,12 @@ function clickadd() {
 
          <div class="col-xs-6">
              <select name="artis" >
+              <option value="" selected>------</option>
             {% for name in models_name %}
               <option value="{{ name.id }}">{{ name.name|upper }}</option>
             {% endfor %}
             </select>
+
             <img src="/static/admin/img/icon-addlink.svg" alt="Add" onclick="clickadd()" style="cursor:pointer">
          </div>
 
