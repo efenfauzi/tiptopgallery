@@ -43,6 +43,7 @@ urlpatterns = [
     url(r'^search.html$', site.search_post, name='search_post'),
     url(r'^list/search=(?P<name>[^/]+).html$', site.model_list, name='model_list'),
     url(r'^addmodel.html$', site.add_modelname, name='add_modelname'),
+    url(r'^thumblr.html$', site.thumblr_collections, name='thumblr_collections'),
 
 
 

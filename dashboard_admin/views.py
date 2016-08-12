@@ -17,6 +17,8 @@ from shutil import copyfile, move, make_archive
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+import requests
+import json 
 # Create your views here.
 
 
@@ -528,3 +530,34 @@ def add_modelname(request):
 
 
 	return render(request, 'add_modelname.html')
+
+
+# @login_required(login_url="/admin/login/?next=/admin/")
+def thumblr_collections(request):
+	r = requests.get('https://api.tumblr.com/v2/blog/thainudegirls.tumblr.com/posts/photo?api_key=78BxoNGuOSd1rD14EmPHWoQpHwvOHkHefbDRhwBRd2sQIm5hgp&limit=10&offset=10')
+	data = r.text
+	# print json.loads(data)
+	datajson = json.loads(data)
+
+	if datajson['meta']['status'] != 200:
+		return HttpResponse('<html><head><meta http-equiv="refresh" content="3; url=/admin/books/populer/" /></head><body> \
+			Buku nya kosong</body></html>')
+	# print datajson
+
+	data =  datajson['response']['posts']
+
+	print datajson
+	# 	print len(data)
+
+        # print data['blog_name'] 
+        # print data['id']
+        # print data['post_url']
+        # print data['slug']
+        # print data['short_url']
+
+        # img =  data['photos']
+        	# img =  photo['original_size']['url'] 
+
+        # print len(img)
+
+	return render(request, 'thumblr.html', {'data' : data})

@@ -1,0 +1,8 @@
+{% for x in data %}
+<h1>{{ x.blog_name }}</h1>
+<h1>{{ x.id }}</h1>
+{% for y in x.photos %}
+<img src="{{ y.original_size.url }}"></br>
+{% endfor %}
+<hr>
+{% endfor %}
