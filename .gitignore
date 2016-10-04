@@ -3,3 +3,22 @@
 
 # Ada Library Information
 *.ali
+
+###########
+# My folder
+###########
+
+*/migrations
+*migrations
+/media
+media/
+/venv
+venv/
+/static
+/static/
+
+*.sqlite3
+
+*.py.save
+*.pyc
+settings.py
