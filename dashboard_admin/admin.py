@@ -17,16 +17,6 @@ class PostAdmin(admin.ModelAdmin):
 	list_display = 'title', 'get_thumb_image', 'url_id', #'get_height_size'
 
 
-	
-	# actions = ['change_uuid', ]
-
-
-	# def change_uuid(self, request, queryset):
-	# 	url_id = queryset.update(url_id=uuid.uuid4())
-	# 	message_bit = "%s " % url_id
-	# 	self.message_user(request, "%s URL id berhasil diubah." % message_bit)
-	# change_uuid.short_description = u'Ubah Url ID'
-
 class PostImageAdmin(admin.ModelAdmin):
 	pass
 

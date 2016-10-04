@@ -33,13 +33,3 @@ def get_size(filename):
 	except:
 		return "no file"
 
-@register.filter(name='get_name')
-def get_name(filename):
-	print filename
-	# try:
-	# 	t = os.remove(path+'/'+filename)
-	# 	# return '<button onclick="%s">Click me</button>' %(t)
-	# 	print t
-	# except:
-	# 	return "no file"
-

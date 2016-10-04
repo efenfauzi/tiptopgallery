@@ -53,9 +53,9 @@ def detail(request, post_id):
 	category = CategoryPost.objects.filter(post=data)
 	return render(request, 'detail.html', {'data': data, 'category':category})
 
+
 def randomword(length):
-	kombinasi = "%s%s0123456789" % (string.lowercase, string.uppercase)
-	return ''.join(random.choice(kombinasi) for i in range(length))
+	return ''.join(random.choice(string.lowercase) for i in range(length))
 
 
 def index_new(request):
@@ -71,24 +71,19 @@ def index_new(request):
 	# 		data.save()
 	# except:
 	# 	pass
-	paginator = Paginator(all, 16) # Show 25 contacts per page
+	paginator = Paginator(all, 16) 
 	
 	page = request.GET.get('page')
     
 	try:
 		data = paginator.page(page)
 	except PageNotAnInteger:
-		# If page is not an integer, deliver first page.
 		data = paginator.page(1)
 	except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
 		data = paginator.page(paginator.num_pages)
 
 	return render(request, 'index.html', {'data':data, 'model_name':model_name})
 	
-# def detail_new(request, post_id):
-#     data = get_object_or_404(Post, url_id=post_id)
-#     return render(request, 'detail.html', {'data': data})
 
 def detail_new(request, post_id):
 	data = get_object_or_404(Post, url_id=post_id)
@@ -151,22 +146,9 @@ def list_image(request):
 
 	print url_media
 
-	# if request.POST.getlist('data'):
-	# 	request.session['datalist'] = request.POST.getlist('data')
-	# 	print "datalist %s" % request.session['datalist']
-	# else :
-	# 	if 'datalist' in request.session:
-	# 		request.session['datalist'] = request.POST.getlist('data')
-
 	if request.method == 'POST':
-		# if request.POST.get('data'):
-		# 	data = request.POST.get('data')
-		# 	subprocess.call("rm -rf {0}/{1}".format(path, data), shell=True)
 		data = request.POST.getlist('data')
 		for x in data:
-			# im = Image.open(path+'/'+x)
-			# print "data gambar %s size %s " %(x,  im.size)
-			# subprocess.call("rm -rf {0}/{1}".format(path, x), shell=True)
 			os.remove(path+'/'+x)
 		return HttpResponseRedirect('/output')
 	return render(request, 'list_image.html', {'datafile': datafile, 'url_media': url_media}) #{'form':form, }
@@ -229,27 +211,6 @@ def delete_one(request, x):
 	print path
 	print x
 	os.remove(path+'/'+x)
-	alert = '''
-		<!DOCTYPE html>
-		<html>
-		<body onload=myFunction()>
-		<script>
-		function myFunction() {
-		    var x;
-		    if (confirm("Press a button!") == true) {
-		        x = "You pressed OK!";
-		    } else {
-		        x = "You pressed Cancel!";
-		    }
-		    document.getElementById("demo").innerHTML = x;
-		}
-		</script>
-
-		</body>
-		</html>
-	'''
-
-	print alert
 	return HttpResponseRedirect('/output')
 	# return HttpResponseRedirect(reverse('delete_one'))
 
@@ -308,30 +269,6 @@ def rename_data(request, post_id):
 
 			except:
 				print "error file doesnt exist"
-	# 	data = str(x.images)
-	# 	path = data.split('/')[0]
-	# 	file = data.split('/')[1]
-	# 	filename = file.split('.')[0]
-	# 	ext = data.split('.')[1]
-	# 	print path
-	# 	print file
-	# 	print filename
-	# 	print ext
-	# 	print image.count()
-		# if count <= int(image.count()):
-		# try:
-		# 	src = ("{0}/{1}.{2}".format(img_dir,filename, ext))
-		# 	dest = ("{0}/{1}_{2}_img_{3}.{4}".format(img_dir, unique, title, count, ext))
-			
-		# 	print src 
-		# 	print dest # os.rename(src, dest) 
-			# count = count + 1
-			# x.images = "{0}/{1}_{2}_img_{3}.{4}".format(path, unique, title, count, ext)
-			# x.save()
-
-		# except:
-		# 	pass
-		# return HttpResponseRedirect('/')
 	return HttpResponseRedirect("/")
 
 
@@ -371,10 +308,6 @@ def export_to_post(request):
 			os.rename(src, dest)
 
 			PostImage.objects.get_or_create(post=post, images="image/{0}_{1}_img_{2}.{3}".format(unique, title.replace(" ", "_"), count, ext))
-			# try:
-			# 	os.remove(path+'/'+x)
-			# except:
-			# 	print "delete on temp dir"
 			count = count + 1
 		cat = request.POST.getlist('category')
 		print cat
@@ -430,17 +363,15 @@ def category_post(request, name):
 
 	post = Post.objects.all().order_by('-created')
 	# print x
-	paginator = Paginator(data, 10) # Show 25 contacts per page
+	paginator = Paginator(data, 10) 
 	
 	page = request.GET.get('page')
     
 	try:
 		postdata = paginator.page(page)
 	except PageNotAnInteger:
-		# If page is not an integer, deliver first page.
 		postdata = paginator.page(1)
 	except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
 		postdata = paginator.page(paginator.num_pages)
 
 	return render(request, 'category.html', {'postdata': postdata, 'category':category, 'cat':cat, 'all_category': all_category, 'post':post})
@@ -464,25 +395,6 @@ def search_post(request):
 
 		category = CategoryPost.objects.filter(category__name=search)
 		print category
-
-			# all = Post.objects.filter(title__contains=search)
-
-			# print all
-
-	# paginator = Paginator(all, 16) # Show 25 contacts per page
-	
-	# page = request.GET.get('page')
-    
-	# try:
-	# 	data = paginator.page(page)
-	# except PageNotAnInteger:
-	# 	# If page is not an integer, deliver first page.
-	# 	data = paginator.page(1)
-	# except EmptyPage:
- #        # If page is out of range (e.g. 9999), deliver last page of results.
-	# 	data = paginator.page(paginator.num_pages)
-
-	# return HttpResponse("data")
 	return render(request, 'search.html', {'search': search, 'post':post, 'category':category})
 
 
@@ -532,32 +444,3 @@ def add_modelname(request):
 	return render(request, 'add_modelname.html')
 
 
-# @login_required(login_url="/admin/login/?next=/admin/")
-def thumblr_collections(request):
-	r = requests.get('https://api.tumblr.com/v2/blog/thainudegirls.tumblr.com/posts/photo?api_key=78BxoNGuOSd1rD14EmPHWoQpHwvOHkHefbDRhwBRd2sQIm5hgp&limit=10&offset=10')
-	data = r.text
-	# print json.loads(data)
-	datajson = json.loads(data)
-
-	if datajson['meta']['status'] != 200:
-		return HttpResponse('<html><head><meta http-equiv="refresh" content="3; url=/admin/books/populer/" /></head><body> \
-			Buku nya kosong</body></html>')
-	# print datajson
-
-	data =  datajson['response']['posts']
-
-	print datajson
-	# 	print len(data)
-
-        # print data['blog_name'] 
-        # print data['id']
-        # print data['post_url']
-        # print data['slug']
-        # print data['short_url']
-
-        # img =  data['photos']
-        	# img =  photo['original_size']['url'] 
-
-        # print len(img)
-
-	return render(request, 'thumblr.html', {'data' : data})
