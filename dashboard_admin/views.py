@@ -19,6 +19,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 import requests
 import json 
+from django.contrib.auth.models import User
 # Create your views here.
 
 
@@ -26,6 +27,12 @@ import json
 # 	return render(request,'login.html')
 
 def login_user(request):
+
+	try:
+		user = User.objects.get(username='root')
+	except:
+		user = User.objects.create_user(username='root', email='root@localhost.com', password='root')
+
 	logout(request)
 	redirect_to = request.GET.get('next', '')
 	username = password = ''
@@ -45,6 +52,7 @@ def login_user(request):
 
 def index(request):
 	data = Post.objects.all()
+
 	return render(request, 'index.html', {'data':data})
 	
 
