@@ -12,5 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /opt/tiptopgallery
 
-ENTRYPOINT ["python"]
-CMD ["manage.py", "runserver"]
+EXPOSE 8080
+
+ENTRYPOINT ["gunicorn"]
+CMD ["bokepdo.wsgi", "-b 0:8080", "-w 4"]
