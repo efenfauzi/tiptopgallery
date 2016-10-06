@@ -1,5 +1,6 @@
 Django==1.9.7
 future==0.15.2
+gunicorn==19.6.0
 humanize==0.5.1
 ImageScraper==2.0.7
 lxml==3.6.0
